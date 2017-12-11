@@ -22,6 +22,12 @@ footer {
     background-color: #e5e5e5;
 }
 
+.wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
 main {
     -ms-flex: 1 0 auto;
     flex: 1 0 auto;
@@ -31,11 +37,17 @@ main {
     padding: 0 20px;
 }
 
+header img {
+    width: 36px;
+    float: left;
+    margin-right: 15px;
+}
+
 h1 {
     text-transform: uppercase;
     max-width: 1000px;
     padding: 0 20px;
-    margin: 0.67em auto;
+    margin: 0.67em auto 0.67em 31px;
 }
 
 select {
