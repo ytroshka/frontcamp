@@ -12,7 +12,6 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         publicPath: 'dist/'
     },
-    watch: NODE_ENV === 'development',
     module: {
         loaders: [{
             test: /\.json$/,
@@ -23,6 +22,9 @@ module.exports = {
         }, {
             test: /\.scss$/,
             loader: 'style-loader!css-loader!sass-loader'
+        }, {
+            test: /\.(png|jpg|gif)$/,
+            loader: 'url-loader'
         }]
     },
     devtool: NODE_ENV === 'development' ? 'source-map' : null,
