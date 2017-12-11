@@ -1,0 +1,4 @@
+{
+  "presets": ["env"],
+  "plugins": [/*"./plugins/babel-custom-plugin.js",*/ "dynamic-import-webpack"]
+}
