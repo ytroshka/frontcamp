@@ -10203,11 +10203,23 @@ var FormElement = function () {
     function FormElement(formElement) {
         _classCallCheck(this, FormElement);
 
-        this.formElement = document.createElement(formElement);
+        switch (formElement) {
+            case 'button':
+                this.formElement = document.createElement('button');
+                this.formElement.classList.add('custom');
+                break;
+            case 'option':
+                this.formElement = document.createElement('option');
+                this.formElement.dataset.custom = 'data';
+                break;
+            default:
+                this.formElement = document.createElement(formElement);
+                break;
+        }
     }
 
     _createClass(FormElement, [{
-        key: "addParameters",
+        key: 'addParameters',
         value: function addParameters(content, className, parent) {
             this.formElement.innerHTML = content;
             this.formElement.classList.add(className);
@@ -10286,7 +10298,7 @@ var NewsApi = function () {
             var select = document.getElementById("sources");
             var articlesContainer = document.getElementById("articles");
 
-            select.addEventListener("change", function () {
+            addEvent(select, 'change', function () {
                 var selectedSource = select.options[select.selectedIndex];
                 articlesContainer.innerHTML = "";
                 if (select.selectedIndex) {
@@ -10309,7 +10321,7 @@ var NewsApi = function () {
         key: "addButtonListener",
         value: function addButtonListener(data) {
             var button = document.getElementsByClassName("show-news")[0];
-            button.addEventListener("click", function () {
+            addEvent(button, 'click', function () {
                 newsObserver.broadcast();
                 new Promise(function (resolve) {
                     __webpack_require__.e/* require.ensure */(0).then((function (require) {
@@ -10364,6 +10376,16 @@ var newsObserver = new EventObserver();
 newsObserver.subscribe(function () {
     console.log('Listener added');
 });
+
+function addEvent(element, eventName, handler) {
+    if (element.addEventListener) {
+        element.addEventListener(eventName, handler, false);
+    } else if (element.attachEvent) {
+        element.attachEvent('on' + eventName, handler);
+    } else {
+        element['on' + eventName] = handler;
+    }
+}
 
 /***/ })
 /******/ ]);
