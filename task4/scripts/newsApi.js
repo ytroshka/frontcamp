@@ -29,7 +29,7 @@ export default class NewsApi {
         const select = document.getElementById("sources");
         const articlesContainer = document.getElementById("articles");
 
-        select.addEventListener("change", () => {
+        addEvent(select, 'change', () => {
             const selectedSource = select.options[select.selectedIndex];
             articlesContainer.innerHTML = "";
             if (select.selectedIndex) {
@@ -47,7 +47,7 @@ export default class NewsApi {
 
     addButtonListener(data) {
         const button = document.getElementsByClassName("show-news")[0];
-        button.addEventListener("click", () => {
+        addEvent(button, 'click', () => {
             newsObserver.broadcast();
             import('./newsRenderer').then(module => {
                 const renderer = module.default;
@@ -80,3 +80,13 @@ const newsObserver = new EventObserver();
 newsObserver.subscribe(() => {
     console.log('Listener added');
 });
+
+function addEvent(element, eventName, handler) {
+    if (element.addEventListener) {
+        element.addEventListener(eventName, handler, false);
+    } else if (element.attachEvent) {
+        element.attachEvent('on' + eventName, handler);
+    } else {
+        element['on' + eventName] = handler;
+    }
+}

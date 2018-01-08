@@ -6,11 +6,11 @@ export default class RenderComponent {
 
     renderArticles(articles) {
         const articlesContainer = document.getElementById("articles");
-        articlesContainer.innerHTML = "";
+        clearContent(articlesContainer);
 
         articles.forEach(response => {
             const articleWrapper = document.createElement("article");
-            articleWrapper.innerHTML = new Article(response).render();
+            articleWrapper.innerHTML = new Article().render(response);
             articlesContainer.appendChild(articleWrapper);
         });
     }
@@ -35,25 +35,20 @@ class Article {
             article = this;
         }
 
-        article.author = response.author;
-        article.description = response.description;
-        article.publishedAt = response.publishedAt;
-        article.title = response.title;
-        article.urlToImage = response.urlToImage;
-        article.url = response.url;
-
-        return defaultData(article);
+        return article;
     }
 
-    render() {
+    render(article) {
+        defaultData(article);
+
         if (article.author.length) {
-            return this.renderFull();
+            return this.renderFull(article);
         } else {
-            return this.renderWithoutAuthor();
+            return this.renderWithoutAuthor(article);
         }
     };
 
-    renderFull() {
+    renderFull(article) {
         return `<a class="image-wrapper" href="${article.url}" target="_blank">
                     <img src="${article.urlToImage}" alt="${article.title}"/>
                 </a>
@@ -66,7 +61,7 @@ class Article {
             `;
     };
 
-    renderWithoutAuthor() {
+    renderWithoutAuthor(article) {
         return `
                 <a class="image-wrapper" href="${article.url}" target="_blank">
                     <img src="${article.urlToImage}" alt="${article.title}"/>
@@ -77,5 +72,13 @@ class Article {
                 <span class="date">${article.publishedAt}</span>
                 <p>${article.description}</p>
             `;
+    }
+}
+
+function clearContent(element) {
+    if(element.textContent) {
+        element.textContent = "";
+    } else {
+        element.innerHTML = "";
     }
 }

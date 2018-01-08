@@ -25,11 +25,11 @@ var RenderComponent = function () {
         key: "renderArticles",
         value: function renderArticles(articles) {
             var articlesContainer = document.getElementById("articles");
-            articlesContainer.innerHTML = "";
+            clearContent(articlesContainer);
 
             articles.forEach(function (response) {
                 var articleWrapper = document.createElement("article");
-                articleWrapper.innerHTML = new Article(response).render();
+                articleWrapper.innerHTML = new Article().render(response);
                 articlesContainer.appendChild(articleWrapper);
             });
         }
@@ -62,39 +62,42 @@ var Article = function () {
             article = this;
         }
 
-        article.author = response.author;
-        article.description = response.description;
-        article.publishedAt = response.publishedAt;
-        article.title = response.title;
-        article.urlToImage = response.urlToImage;
-        article.url = response.url;
-
-        return defaultData(article);
+        return article;
     }
 
     _createClass(Article, [{
         key: "render",
-        value: function render() {
+        value: function render(article) {
+            defaultData(article);
+
             if (article.author.length) {
-                return this.renderFull();
+                return this.renderFull(article);
             } else {
-                return this.renderWithoutAuthor();
+                return this.renderWithoutAuthor(article);
             }
         }
     }, {
         key: "renderFull",
-        value: function renderFull() {
+        value: function renderFull(article) {
             return "<a class=\"image-wrapper\" href=\"" + article.url + "\" target=\"_blank\">\n                    <img src=\"" + article.urlToImage + "\" alt=\"" + article.title + "\"/>\n                </a>\n                <a href=\"" + article.url + "\" target=\"_blank\">\n                    <h2>" + article.title + "</h2>\n                </a>\n                <span class=\"date\">" + article.publishedAt + "</span>\n                <p>" + article.description + "</p>\n                <span class=\"author\">" + article.author + "</span>\n            ";
         }
     }, {
         key: "renderWithoutAuthor",
-        value: function renderWithoutAuthor() {
+        value: function renderWithoutAuthor(article) {
             return "\n                <a class=\"image-wrapper\" href=\"" + article.url + "\" target=\"_blank\">\n                    <img src=\"" + article.urlToImage + "\" alt=\"" + article.title + "\"/>\n                </a>\n                <a href=\"" + article.url + "\" target=\"_blank\">\n                    <h2>" + article.title + "</h2>\n                </a>\n                <span class=\"date\">" + article.publishedAt + "</span>\n                <p>" + article.description + "</p>\n            ";
         }
     }]);
 
     return Article;
 }();
+
+function clearContent(element) {
+    if (element.textContent) {
+        element.textContent = "";
+    } else {
+        element.innerHTML = "";
+    }
+}
 
 /***/ }),
 
