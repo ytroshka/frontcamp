@@ -1,6 +1,18 @@
 class FormElement {
     constructor(formElement) {
-        this.formElement = document.createElement(formElement);
+        switch (formElement) {
+            case 'button':
+                this.formElement = document.createElement('button');
+                this.formElement.classList.add('custom');
+                break;
+            case 'option':
+                this.formElement = document.createElement('option');
+                this.formElement.dataset.custom = 'data';
+                break;
+            default:
+                this.formElement = document.createElement(formElement);
+                break;
+        }
     }
 
     addParameters(content, className, parent) {
