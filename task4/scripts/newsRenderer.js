@@ -10,7 +10,9 @@ export default class RenderComponent {
 
         articles.forEach(response => {
             const articleWrapper = document.createElement("article");
-            articleWrapper.innerHTML = new Article().render(response);
+            let strategy = response.author.length ? new TemplateWithAuthor() : new Template();
+
+            articleWrapper.innerHTML = new Article().setStrategy(strategy).render(response);
             articlesContainer.appendChild(articleWrapper);
         });
     }
@@ -40,15 +42,31 @@ class Article {
 
     render(article) {
         defaultData(article);
+        return this.template.createTemplate(article);
+    }
 
-        if (article.author.length) {
-            return this.renderFull(article);
-        } else {
-            return this.renderWithoutAuthor(article);
-        }
-    };
+    setStrategy(template) {
+        this.template = template;
+        return this;
+    }
+}
 
-    renderFull(article) {
+class Template {
+    createTemplate(article) {
+        return `<a class="image-wrapper" href="${article.url}" target="_blank">
+                    <img src="${article.urlToImage}" alt="${article.title}"/>
+                </a>
+                <a href="${article.url}" target="_blank">
+                    <h2>${article.title}</h2>
+                </a>
+                <span class="date">${article.publishedAt}</span>
+                <p>${article.description}</p>
+            `;
+    }
+}
+
+class TemplateWithAuthor {
+    createTemplate(article) {
         return `<a class="image-wrapper" href="${article.url}" target="_blank">
                     <img src="${article.urlToImage}" alt="${article.title}"/>
                 </a>
@@ -58,19 +76,6 @@ class Article {
                 <span class="date">${article.publishedAt}</span>
                 <p>${article.description}</p>
                 <span class="author">${article.author}</span>
-            `;
-    };
-
-    renderWithoutAuthor(article) {
-        return `
-                <a class="image-wrapper" href="${article.url}" target="_blank">
-                    <img src="${article.urlToImage}" alt="${article.title}"/>
-                </a>
-                <a href="${article.url}" target="_blank">
-                    <h2>${article.title}</h2>
-                </a>
-                <span class="date">${article.publishedAt}</span>
-                <p>${article.description}</p>
             `;
     }
 }
