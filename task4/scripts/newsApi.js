@@ -1,3 +1,7 @@
+import Observer from './observer';
+
+const observer = new Observer();
+
 export default class NewsApi {
     constructor(baseUrl, apiKey) {
         this.baseUrl = baseUrl;
@@ -5,9 +9,14 @@ export default class NewsApi {
     }
 
     getSources() {
+        observer.broadcast('getSourcesStarted');
+
         fetch(`${this.baseUrl}/sources?apiKey=${this.apiKey}`)
             .then(response => response.json())
-            .then(data => this.renderSources(data.sources))
+            .then((data) => {
+                observer.broadcast('getSourcesCompleted', {status: 1});
+                return data;
+            }).then(data => this.renderSources(data.sources))
             .then(() => this.addSelectListener())
             .catch(console.log);
     }
@@ -16,11 +25,15 @@ export default class NewsApi {
         const select = document.getElementById("sources");
         const fragment = document.createDocumentFragment();
 
+        observer.broadcast('renderSourcesStarted');
+
         sources.forEach(({id, name, description}) => {
             const option = document.createElement("option");
             [option.id, option.textContent, option.title] = [id, name, description];
             fragment.appendChild(option);
         });
+
+        observer.broadcast('renderSourcesCompleted');
 
         select.appendChild(fragment);
     }
@@ -39,8 +52,13 @@ export default class NewsApi {
     }
 
     getNews(source) {
+        observer.broadcast('getNewsStarted');
         fetch(`${this.baseUrl}/top-headlines?sources=${source}&apiKey=${this.apiKey}`)
             .then(response => response.json())
+            .then((data) => {
+                observer.broadcast('getNewsCompleted');
+                return data;
+            })
             .then((data) => this.addButtonListener(data))
             .catch(console.log);
     }
@@ -48,7 +66,6 @@ export default class NewsApi {
     addButtonListener(data) {
         const button = document.getElementsByClassName("show-news")[0];
         addEvent(button, 'click', () => {
-            newsObserver.broadcast();
             import('./newsRenderer').then(module => {
                 const renderer = module.default;
                 const newsRenderer = new renderer();
@@ -57,29 +74,6 @@ export default class NewsApi {
         });
     }
 }
-
-class EventObserver {
-    constructor() {
-        this.observers = [];
-    }
-
-    subscribe(fn) {
-        this.observers.push(fn);
-    }
-
-    unsubscribe(fn) {
-        this.observers = this.observers.filter(subscriber => subscriber !== fn);
-    }
-
-    broadcast(data) {
-        this.observers.forEach(subscriber => subscriber(data));
-    }
-}
-
-const newsObserver = new EventObserver();
-newsObserver.subscribe(() => {
-    console.log('Listener added');
-});
 
 function addEvent(element, eventName, handler) {
     if (element.addEventListener) {
