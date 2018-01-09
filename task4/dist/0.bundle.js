@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 334:
+/***/ 337:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(335);
+__webpack_require__(338);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -124,13 +124,13 @@ function clearContent(element) {
 
 /***/ }),
 
-/***/ 335:
+/***/ 338:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(336);
+var content = __webpack_require__(339);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -138,7 +138,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(338)(content, options);
+var update = __webpack_require__(341)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -156,10 +156,10 @@ if(false) {
 
 /***/ }),
 
-/***/ 336:
+/***/ 339:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(337)(false);
+exports = module.exports = __webpack_require__(340)(false);
 // imports
 
 
@@ -171,7 +171,7 @@ exports.push([module.i, "#articles {\n  font-size: 0;\n  column-count: 2;\n  col
 
 /***/ }),
 
-/***/ 337:
+/***/ 340:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -254,7 +254,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 338:
+/***/ 341:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -310,7 +310,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(339);
+var	fixUrls = __webpack_require__(342);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -627,7 +627,7 @@ function updateLink (link, options, obj) {
 
 /***/ }),
 
-/***/ 339:
+/***/ 342:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
