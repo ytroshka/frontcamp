@@ -29,7 +29,9 @@ var RenderComponent = function () {
 
             articles.forEach(function (response) {
                 var articleWrapper = document.createElement("article");
-                articleWrapper.innerHTML = new Article().render(response);
+                var strategy = response.author.length ? new TemplateWithAuthor() : new Template();
+
+                articleWrapper.innerHTML = new Article().setStrategy(strategy).render(response);
                 articlesContainer.appendChild(articleWrapper);
             });
         }
@@ -69,26 +71,47 @@ var Article = function () {
         key: "render",
         value: function render(article) {
             defaultData(article);
-
-            if (article.author.length) {
-                return this.renderFull(article);
-            } else {
-                return this.renderWithoutAuthor(article);
-            }
+            return this.template.createTemplate(article);
         }
     }, {
-        key: "renderFull",
-        value: function renderFull(article) {
-            return "<a class=\"image-wrapper\" href=\"" + article.url + "\" target=\"_blank\">\n                    <img src=\"" + article.urlToImage + "\" alt=\"" + article.title + "\"/>\n                </a>\n                <a href=\"" + article.url + "\" target=\"_blank\">\n                    <h2>" + article.title + "</h2>\n                </a>\n                <span class=\"date\">" + article.publishedAt + "</span>\n                <p>" + article.description + "</p>\n                <span class=\"author\">" + article.author + "</span>\n            ";
-        }
-    }, {
-        key: "renderWithoutAuthor",
-        value: function renderWithoutAuthor(article) {
-            return "\n                <a class=\"image-wrapper\" href=\"" + article.url + "\" target=\"_blank\">\n                    <img src=\"" + article.urlToImage + "\" alt=\"" + article.title + "\"/>\n                </a>\n                <a href=\"" + article.url + "\" target=\"_blank\">\n                    <h2>" + article.title + "</h2>\n                </a>\n                <span class=\"date\">" + article.publishedAt + "</span>\n                <p>" + article.description + "</p>\n            ";
+        key: "setStrategy",
+        value: function setStrategy(template) {
+            this.template = template;
+            return this;
         }
     }]);
 
     return Article;
+}();
+
+var Template = function () {
+    function Template() {
+        _classCallCheck(this, Template);
+    }
+
+    _createClass(Template, [{
+        key: "createTemplate",
+        value: function createTemplate(article) {
+            return "<a class=\"image-wrapper\" href=\"" + article.url + "\" target=\"_blank\">\n                    <img src=\"" + article.urlToImage + "\" alt=\"" + article.title + "\"/>\n                </a>\n                <a href=\"" + article.url + "\" target=\"_blank\">\n                    <h2>" + article.title + "</h2>\n                </a>\n                <span class=\"date\">" + article.publishedAt + "</span>\n                <p>" + article.description + "</p>\n            ";
+        }
+    }]);
+
+    return Template;
+}();
+
+var TemplateWithAuthor = function () {
+    function TemplateWithAuthor() {
+        _classCallCheck(this, TemplateWithAuthor);
+    }
+
+    _createClass(TemplateWithAuthor, [{
+        key: "createTemplate",
+        value: function createTemplate(article) {
+            return "<a class=\"image-wrapper\" href=\"" + article.url + "\" target=\"_blank\">\n                    <img src=\"" + article.urlToImage + "\" alt=\"" + article.title + "\"/>\n                </a>\n                <a href=\"" + article.url + "\" target=\"_blank\">\n                    <h2>" + article.title + "</h2>\n                </a>\n                <span class=\"date\">" + article.publishedAt + "</span>\n                <p>" + article.description + "</p>\n                <span class=\"author\">" + article.author + "</span>\n            ";
+        }
+    }]);
+
+    return TemplateWithAuthor;
 }();
 
 function clearContent(element) {
