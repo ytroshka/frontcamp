@@ -10,7 +10,7 @@ export default class RenderComponent {
 
         articles.forEach(response => {
             const articleWrapper = document.createElement("article");
-            let strategy = response.author.length ? new TemplateWithAuthor() : new Template();
+            let strategy = response.author ? new TemplateWithAuthor() : new Template();
 
             articleWrapper.innerHTML = new Article().setStrategy(strategy).render(response);
             articlesContainer.appendChild(articleWrapper);
