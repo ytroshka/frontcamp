@@ -4,8 +4,13 @@ import 'babel-polyfill';
 import 'whatwg-fetch';
 import FormElement from './formElement';
 import NewsApi from './newsApi';
+import CustomDebug from './customDebug';
+import Report from './reporting';
 
 (() => {
+    new CustomDebug().init();
+    new Report().init();
+
     const header = document.querySelector('header .wrapper');
     const image = document.createElement("img");
 
