@@ -89,7 +89,7 @@ Show result as ```{ "avgPassengers" : 2312.380, "city" : "Minsk, Belarus" }```
       {
         $match: {
           originCountry: "United States",
-          $or: [{destCountry: "Greece"}, {destCountry: "Italy"}, {destCountry: "Spain"}]
+          destCountry: {$in: ['Italy', 'Greece', 'Spain']}
         }
       },
       {
@@ -162,17 +162,26 @@ Show result as ```{ "avgPassengers" : 2312.380, "city" : "Minsk, Belarus" }```
 
     ```
     db.enron.aggregate([
-      {$unwind: "$headers.To"}, {
+      {$unwind: "$headers.To"},
+      {
         $group: {
-          _id: {from: "$headers.From", to: "$headers.To"},
+          _id: {from: "$headers.From", to: "$headers.To", message_id: "$headers.Message-ID"}
+        }
+      },
+      {$unwind: "$_id.to"},
+      {
+        $group: {
+          _id: {from: "$_id.from", to: "$_id.to"},
           messages: {$sum: 1}
         }
       },
       {$sort: {messages: -1}},
       {$limit: 1}
-    ]);
+    ], {
+      allowDiskUse: true
+    });
     ```
     
     ```
-    { "_id" : { "from" : "veronica.espinoza@enron.com", "to" : "recipients@enron.com" }, "messages" : 2181 }
+    { "_id" : { "from" : "susan.mara@enron.com", "to" : "jeff.dasovich@enron.com" }, "messages" : 750 }
     ```
