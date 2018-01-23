@@ -165,21 +165,21 @@ Show result as ```{ "avgPassengers" : 2312.380, "city" : "Minsk, Belarus" }```
       {$unwind: "$headers.To"},
       {
         $group: {
-          _id: {from: "$headers.From", to: "$headers.To", message_id: "$headers.Message-ID"}
+          _id: "$_id",
+          from: {$first: "$headers.From"},
+          to: {$addToSet: "$headers.To"}
         }
       },
-      {$unwind: "$_id.to"},
+      {$unwind: "$to"},
       {
         $group: {
-          _id: {from: "$_id.from", to: "$_id.to"},
+          _id: {from: "$from", to: "$to"},
           messages: {$sum: 1}
         }
       },
       {$sort: {messages: -1}},
       {$limit: 1}
-    ], {
-      allowDiskUse: true
-    });
+    ])
     ```
     
     ```
