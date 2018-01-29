@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1",
+    "author": "John",
+    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit0"
+  },
+  {
+    "id": "2",
+    "author": "Peter",
+    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit1"
+  },
+  {
+    "id": "3",
+    "author": "Frank",
+    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit2"
+  },
+  {
+    "id": "4",
+    "author": "Gary",
+    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit3"
+  }
+]
