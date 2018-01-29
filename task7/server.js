@@ -45,22 +45,23 @@ app.route('/posts/:id')
   .put((req, res) => {
     const {author, content} = req.body;
     const id = req.params.id;
+    const index = data.findIndex(post => post.id === id);
     const post = {
       'id': id,
       'author': author || 'User',
       'content': content || 'Content of the post'
     };
 
-    if (data.map((post) => post.id).indexOf(id) === -1) {
+    if (index === -1) {
       data.push(post);
-      res.send('post ' + id);
     } else {
-      res.send(id + ' exists');
+      data[index] = post;
     }
+    res.send('post ' + id);
   })
   .delete((req, res) => {
     const id = req.params.id;
-    const index = data.map((post) => post.id).indexOf(id);
+    const index = data.findIndex(post => post.id === id);
 
     if (index !== -1) {
       data.splice(index, 1);
