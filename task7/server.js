@@ -60,9 +60,10 @@ app.route('/posts/:id')
   })
   .delete((req, res) => {
     const id = req.params.id;
+    const index = data.map((post) => post.id).indexOf(id);
 
-    if (data.map((post) => post.id).indexOf(id) !== -1) {
-      data.splice(id, 1);
+    if (index !== -1) {
+      data.splice(index, 1);
       res.send('delete ' + id);
     } else {
       res.send('nothing to delete');
