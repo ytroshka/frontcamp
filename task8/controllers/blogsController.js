@@ -90,9 +90,5 @@ module.exports = {
         res.status(404).send('nothing to delete');
       }
     });
-  },
-
-  showErrorPage(req, res) {
-    res.render('./error.ejs');
   }
 };

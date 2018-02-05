@@ -7,7 +7,7 @@ function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect('/user');
+  res.redirect('/');
 }
 
 router.get('/posts', isLoggedIn, blogController.getAll);
@@ -19,7 +19,5 @@ router.post('/posts', isLoggedIn, blogController.create);
 router.put('/posts/:id', isLoggedIn, blogController.put);
 
 router.delete('/posts/:id', isLoggedIn, blogController.deleteById);
-
-router.all('*', blogController.showErrorPage);
 
 module.exports = router;

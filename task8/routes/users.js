@@ -1,35 +1,28 @@
-const passport = require('passport');
 const express = require('express');
-
+const userController = require('../controllers/usersController');
+const passport = require('passport');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.render('index.ejs');
-});
-
 router.post('/login', passport.authenticate('local-login', {
-  successRedirect: '/posts',
-  failureRedirect: '/login',
-  failureFlash: true
-}));
-
-router.get('/login', (req, res) => {
-  res.render('login.ejs', {message: req.flash('loginMessage')});
-});
+    successRedirect: '/posts',
+    failureRedirect: '/login',
+    failureFlash: true
+  })
+);
 
 router.post('/signup', passport.authenticate('local-signup', {
-  successRedirect: '/profile',
-  failureRedirect: '/signup',
-  failureFlash: true
-}));
+    successRedirect: '/posts',
+    failureRedirect: '/signup',
+    failureFlash: true
+  })
+);
 
-router.get('/signup', (req, res) => {
-  res.render('signup.ejs', {message: req.flash('signupMessage')});
-});
+router.get('/', userController.getAuthPage);
 
-router.get('/logout', (req, res) => {
-  req.logout();
-  res.redirect('/');
-});
+router.get('/login', userController.getLoginPage);
+
+router.get('/signup', userController.getSignupPage);
+
+router.get('/logout', userController.logout);
 
 module.exports = router;

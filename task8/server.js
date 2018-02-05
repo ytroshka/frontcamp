@@ -36,6 +36,11 @@ app.use((req, res, next) => {
 app.use('/', users);
 app.use('/', blogs);
 
+app.use(function(err, req, res, next) {
+  console.error(err);
+  res.status(500).send('Something broke!');
+});
+
 app.listen(3010, () => {
   console.log('listening on 3010');
 });
