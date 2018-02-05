@@ -1,22 +1,23 @@
 const uniqid = require('uniqid');
-const data = require('../data/data.json');
 const Blog = require('../models/blog');
 
 module.exports = {
-  //
   getAll(req, res) {
     Blog.find({}, (err, data) => {
-      if (err) throw err;
+      if (err) {
+        throw err;
+      }
       res.send(data);
     });
   },
 
-  //
   getById(req, res) {
     const id = req.params.id;
 
     Blog.findById(id, (err, data) => {
-      if (err) throw err;
+      if (err) {
+        throw err;
+      }
       if (data) {
         res.send(data);
       } else {
@@ -25,7 +26,6 @@ module.exports = {
     });
   },
 
-  //
   create(req, res) {
     const {author, content} = req.body;
 
@@ -36,42 +36,63 @@ module.exports = {
     });
 
     item.save(err => {
-      if (err) throw err;
+      if (err) {
+        throw err;
+      }
       res.send('post');
     });
   },
 
-  //
   put(req, res) {
     const {author, content} = req.body;
     const id = req.params.id;
 
     Blog.findById(id, (err, data) => {
-      if (err) throw err;
-      data._id = id;
-      data.author = author;
-      data.content = content;
+      if (err) {
+        throw err;
+      }
+      if (data) {
+        data.author = author;
+        data.content = content;
+        data.save((err, data) => {
+          if (err) {
+            throw err;
+          }
+          res.send(data._id + ' update');
+        });
+      } else {
+        const item = Blog({
+          '_id': id,
+          'author': author || 'User',
+          'content': content || 'Content of the post'
+        });
 
-      data.save((err, data) => {
-        if (err) throw err;
-        res.send(data._id + ' update');
-      });
+        item.save((err, data) => {
+          if (err) {
+            throw err;
+          }
+          res.send(data._id + ' post');
+        });
+      }
     });
   },
 
   deleteById(req, res) {
     const id = req.params.id;
-    const index = data.findIndex(post => post.id === id);
 
-    if (index !== -1) {
-      data.splice(index, 1);
-      res.send('delete ' + id);
-    } else {
-      res.status(404).send('nothing to delete');
-    }
+    Blog.findByIdAndRemove(id, (err, data) => {
+      if (err) {
+        throw err;
+      }
+      if (data) {
+        res.send('delete ' + id);
+      } else {
+        res.status(404).send('nothing to delete');
+      }
+    });
   },
 
   showErrorPage(req, res) {
-    res.render('./index.ejs');
+    res.render('./error.ejs');
   }
 };
