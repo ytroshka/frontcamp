@@ -1,5 +1,5 @@
-const uniqid = require('uniqid');
 const Blog = require('../models/blog');
+const uniqid = require('uniqid');
 
 module.exports = {
   getAll(req, res) {
@@ -14,11 +14,11 @@ module.exports = {
   getById(req, res) {
     const id = req.params.id;
 
-    Blog.findById(id, (err, data) => {
+    Blog.find({blogId: id}, (err, data) => {
       if (err) {
         throw err;
       }
-      if (data) {
+      if (data.length) {
         res.send(data);
       } else {
         res.status(404).send('not found');
@@ -30,7 +30,7 @@ module.exports = {
     const {author, content} = req.body;
 
     const item = Blog({
-      '_id': uniqid(),
+      'blogId': uniqid(),
       'author': author || 'User',
       'content': content || 'Content of the post'
     });
@@ -47,22 +47,22 @@ module.exports = {
     const {author, content} = req.body;
     const id = req.params.id;
 
-    Blog.findById(id, (err, data) => {
+    Blog.find({blogId: id}, (err, data) => {
       if (err) {
         throw err;
       }
-      if (data) {
-        data.author = author;
-        data.content = content;
-        data.save((err, data) => {
+      if (data.length) {
+        data[0].author = author;
+        data[0].content = content;
+        data[0].save((err, data) => {
           if (err) {
             throw err;
           }
-          res.send(data._id + ' update');
+          res.send('update');
         });
       } else {
         const item = Blog({
-          '_id': id,
+          'blogId': id,
           'author': author || 'User',
           'content': content || 'Content of the post'
         });
@@ -71,7 +71,7 @@ module.exports = {
           if (err) {
             throw err;
           }
-          res.send(data._id + ' post');
+          res.send('post');
         });
       }
     });
@@ -80,7 +80,7 @@ module.exports = {
   deleteById(req, res) {
     const id = req.params.id;
 
-    Blog.findByIdAndRemove(id, (err, data) => {
+    Blog.remove({blogId: id}, (err, data) => {
       if (err) {
         throw err;
       }
