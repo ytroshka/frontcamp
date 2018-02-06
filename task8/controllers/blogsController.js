@@ -46,33 +46,20 @@ module.exports = {
   put(req, res) {
     const {author, content} = req.body;
     const id = req.params.id;
+    const newItem = {
+      author,
+      content,
+      blogId: id
+    };
 
-    Blog.find({blogId: id}, (err, data) => {
+    Blog.findOneAndUpdate({blogId: id}, {$set: newItem}, {upsert: true}, function (err, updatedBlog) {
       if (err) {
         throw err;
       }
-      if (data.length) {
-        data[0].author = author;
-        data[0].content = content;
-        data[0].save((err, data) => {
-          if (err) {
-            throw err;
-          }
-          res.send('update');
-        });
+      if (updatedBlog) {
+        res.send('update ' + updatedBlog.blogId);
       } else {
-        const item = Blog({
-          'blogId': id,
-          'author': author || 'User',
-          'content': content || 'Content of the post'
-        });
-
-        item.save((err, data) => {
-          if (err) {
-            throw err;
-          }
-          res.send('post');
-        });
+        res.send('post');
       }
     });
   },
