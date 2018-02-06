@@ -10,14 +10,14 @@ function isLoggedIn(req, res, next) {
   res.redirect('/');
 }
 
-router.get('/posts', isLoggedIn, blogController.getAll);
+router.get('/', isLoggedIn, blogController.getAll);
 
-router.get('/posts/:id', isLoggedIn, blogController.getById);
+router.get('/:id', isLoggedIn, blogController.getById);
 
-router.post('/posts', isLoggedIn, blogController.create);
+router.post('/', isLoggedIn, blogController.create);
 
-router.put('/posts/:id', isLoggedIn, blogController.put);
+router.put('/:id', isLoggedIn, blogController.put);
 
-router.delete('/posts/:id', isLoggedIn, blogController.deleteById);
+router.delete('/:id', isLoggedIn, blogController.deleteById);
 
 module.exports = router;

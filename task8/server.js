@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/', users);
-app.use('/', blogs);
+app.use('/posts', blogs);
 
 app.use((err, req, res, next) => {
   console.error(err);
