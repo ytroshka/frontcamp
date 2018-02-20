@@ -9,10 +9,18 @@ class PostList extends React.Component {
       newAuthor: '',
       newContent: '',
       posts: props.posts
-    }
+    };
+
+    this.addPost = this.addPost.bind(this);
+    this.deletePost = this.deletePost.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
+    this.handleAuthorChange = this.handleAuthorChange.bind(this);
+    this.handleContentChange = this.handleContentChange.bind(this);
+    this.renderItem = this.renderItem.bind(this);
+    this.filterByAuthor = this.filterByAuthor.bind(this);
   }
 
-  filterPosts(e) {
+  handleSelectChange(e) {
     e.stopPropagation();
     e.preventDefault();
 
@@ -56,32 +64,36 @@ class PostList extends React.Component {
     });
   }
 
+  renderItem(post) {
+    return (<PostItem key={post.id} post={post} deletePost={this.deletePost}/>);
+  }
+
+  filterByAuthor(post) {
+    if (this.state.author === '') {
+      return true;
+    }
+    return post.author === this.state.author;
+  }
+
   render() {
     let posts = this.state.posts;
     let unique = [...new Set(posts.map(item => item.author))];
 
     return (
       <div>
-        <form onSubmit={this.addPost.bind(this)}>
+        <form onSubmit={this.addPost}>
           <input type='text' placeholder='author' value={this.state.newAuthor}
-                 onChange={this.handleAuthorChange.bind(this)}/>
+                 onChange={this.handleAuthorChange}/>
           <input type='text' placeholder='content' value={this.state.newContent}
-                 onChange={this.handleContentChange.bind(this)}/>
+                 onChange={this.handleContentChange}/>
           <button>Add</button>
         </form>
         <ul style={{paddingLeft: 0}}>
           {
-            posts.filter((post) => {
-              if (this.state.author === '') {
-                return true;
-              }
-              return post.author === this.state.author
-            }).map((post) => {
-              return (<PostItem key={post.id} post={post} deletePost={this.deletePost.bind(this)}/>);
-            })
+            posts.filter(this.filterByAuthor).map(this.renderItem)
           }
         </ul>
-        <select onChange={this.filterPosts.bind(this)}>
+        <select onChange={this.handleSelectChange}>
           <option></option>
           {unique.map((index) => (
             <option key={index}>{index}</option>
