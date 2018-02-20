@@ -10,20 +10,10 @@ class App extends Component {
     }
   }
 
-  deletePost(id) {
-    let items = this.state.posts.filter((post) => {
-      return post.id !== id
-    });
-
-    this.setState({
-      posts: items
-    });
-  }
-
   render() {
     return (
       <div>
-        <PostList deletePost={this.deletePost.bind(this)} posts={this.state.posts}/>
+        <PostList posts={this.state.posts}/>
       </div>
     );
   }

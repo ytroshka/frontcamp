@@ -2,12 +2,13 @@ import React, {Component} from 'react';
 import PostItem from './PostItem';
 
 class PostList extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       author: '',
       newAuthor: '',
-      newContent: ''
+      newContent: '',
+      posts: props.posts
     }
   }
 
@@ -37,7 +38,7 @@ class PostList extends React.Component {
         id: Date.now()
       };
 
-      this.props.posts.push(post);
+      this.state.posts.push(post);
       this.setState({
         newAuthor: '',
         newContent: ''
@@ -45,8 +46,18 @@ class PostList extends React.Component {
     }
   }
 
+  deletePost(id) {
+    let items = this.state.posts.filter((post) => {
+      return post.id !== id
+    });
+
+    this.setState({
+      posts: items
+    });
+  }
+
   render() {
-    let posts = this.props.posts;
+    let posts = this.state.posts;
     let unique = [...new Set(posts.map(item => item.author))];
 
     return (
@@ -66,7 +77,7 @@ class PostList extends React.Component {
               }
               return post.author === this.state.author
             }).map((post) => {
-              return (<PostItem key={post.id} post={post} deletePost={this.props.deletePost}/>);
+              return (<PostItem key={post.id} post={post} deletePost={this.deletePost.bind(this)}/>);
             })
           }
         </ul>
