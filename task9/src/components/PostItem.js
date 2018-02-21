@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 
 class PostItem extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.deletePost = props.deletePost.bind(null, props.post.id)
   }
 
   render() {
@@ -13,7 +14,7 @@ class PostItem extends Component {
         <div>
           <p>{post.author}</p>
           <p>{post.content}</p>
-          <button onClick={this.props.deletePost.bind(null, post.id)}>Delete</button>
+          <button onClick={this.deletePost}>Delete</button>
         </div>
       </li>
     );
