@@ -1,41 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <base href="/">
     <meta charset="UTF-8">
     <title>Todo App</title>
     <link rel="stylesheet" href="styles/main.css">
     <script src="vendor/angular.min.js"></script>
     <script src="vendor/angular-resource.js"></script>
+    <script src="vendor/angular-route.js"></script>
     <script src="app/controllers/TodoController.js"></script>
 </head>
 <body ng-app="app">
 <div ng-controller="todoCtrl">
-    <form ng-submit="addTodo()" name="addTodoForm" novalidate>
-        <input type="text" name="todoName" ng-model="todoName" required ng-minlength="5">
-        <span ng-show="addTodoForm.todoName.$error.minlength">Min length is 5.</span>
-        <div>
-            <input type="submit" value="add"
-                   ng-disabled="addTodoForm.todoName.$error.required || addTodoForm.todoName.$error.minlength">
-        </div>
-    </form>
+
+    <a href="/add">Add</a>
+    <div ng-view></div>
+
     <p>You have {{todos.length}} tasks</p>
     <ul>
         <li ng-repeat="todo in todos | filter:filterByCompleted() | filter:filterByDatePeriod | orderBy:propertyName:reverse">
-            <div class="edit">
-                <form ng-submit="saveTodo()" name="saveTodoForm" novalidate>
-                    <input type="text" name="todoName" ng-model="todo.name" required ng-minlength="5">
-                    <span ng-show="saveTodoForm.todoName.$error.minlength">Min length is 5.</span><br/>
-                    <input type="date" name="todoDate" ng-model="todo.date" required>
-                    <div>
-                        <input type="submit" value="save"
-                               ng-disabled="saveTodoForm.todoName.$error.required ||
-                               saveTodoForm.todoName.$error.minlength ||
-                               saveTodoForm.todoDate.$error.required">
-                    </div>
-                </form>
-            </div>
             <div class="view">
-                <span class="name" ng-click="toggleEditMode()">{{todo.name}}</span><br/>
+                <a class="name" ng-click="toggleEditMode(todo)" ng-href="/edit/{{todo.id}}">{{todo.name}}</a><br/>
                 <span class="date">{{todo.date | date: 'medium'}}</span>
                 <input type="checkbox" ng-checked="todo.completed" ng-model="todo.completed">
                 <input type="submit" value="delete" ng-click="deleteTodo($index)">

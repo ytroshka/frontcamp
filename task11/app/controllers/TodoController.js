@@ -1,11 +1,21 @@
-const app = angular.module('app', ['ngResource']);
+const app = angular.module('app', ['ngResource', 'ngRoute']);
 
-app.controller('todoCtrl', ['$scope', 'orderByFilter', '$resource', function ($scope, orderBy, $resource) {
+app.config(['$routeProvider','$locationProvider', function ($routeProvider, $locationProvider) {
+  $locationProvider.html5Mode({
+    enabled: true,
+    requireBase: false
+  });
+  $routeProvider.when('/add', {
+    templateUrl: 'templates/add.html'
+  }).when('/edit/:id', {
+    templateUrl: 'templates/edit.html'
+  });
+}]).controller('todoCtrl', ['$scope', 'orderByFilter', '$resource', function ($scope, orderBy, $resource) {
   const MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24;
   $scope.todos = [];
 
-  var jsonResource = $resource('/data/todos.json');
-  jsonResource.query({}, function(response) {
+  const jsonResource = $resource('./data/todos.json');
+  jsonResource.query({}, function (response) {
     $scope.todos = response;
     $scope.todos.map(function (todo) {
       todo.date = new Date(todo.date);
@@ -17,13 +27,14 @@ app.controller('todoCtrl', ['$scope', 'orderByFilter', '$resource', function ($s
 
   $scope.addTodo = function () {
     const item = {
-      name: $scope.todoName,
+      name: this.todoName,
       date: new Date(),
-      completed: false
+      completed: false,
+      id: Date.now()
     };
 
-    $scope.todos.push(item);
-    $scope.todoName = '';
+    this.todos.push(item);
+    this.todoName = '';
   };
 
   $scope.deleteTodo = function (index) {
@@ -62,8 +73,9 @@ app.controller('todoCtrl', ['$scope', 'orderByFilter', '$resource', function ($s
     $scope.todos = orderBy($scope.todos, $scope.propertyName, $scope.reverse);
   };
 
-  $scope.toggleEditMode = function () {
+  $scope.toggleEditMode = function (task) {
     event.target.closest('li').classList.toggle('editing');
+    $scope.newTodoName = task.name;
   };
 
   $scope.saveTodo = function () {

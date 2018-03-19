@@ -1,0 +1,13 @@
+<div class="edit">
+  <form ng-submit="saveTodo()" name="saveTodoForm" novalidate>
+    <input type="text" name="todoName" ng-model="newTodoName" required ng-minlength="5">
+    <span ng-show="saveTodoForm.todoName.$error.minlength">Min length is 5.</span><br/>
+    <input type="date" name="todoDate" ng-model="todo.date" required>
+    <div>
+      <input type="submit" value="save"
+             ng-disabled="saveTodoForm.todoName.$error.required ||
+                               saveTodoForm.todoName.$error.minlength ||
+                               saveTodoForm.todoDate.$error.required">
+    </div>
+  </form>
+</div>
