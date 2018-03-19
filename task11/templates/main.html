@@ -1,0 +1,24 @@
+<a href="/add">Add</a>
+<p>You have {{todos.length}} tasks</p>
+<ul>
+    <li ng-repeat="todo in todos | filter:filterByCompleted() | filter:filterByDatePeriod() | orderBy:propertyName:reverse">
+        <div class="view">
+            <a class="name" href="/edit/{{todo.id}}">{{todo.name}}</a><br/>
+            <span class="date">{{todo.date | date}}</span>
+            <input type="checkbox" ng-checked="todo.completed" ng-model="todo.completed">
+            <input type="submit" value="delete" ng-click="deleteTodo($index)">
+        </div>
+    </li>
+</ul>
+<div>
+    <button ng-click="setFilterParameter('')">All</button>
+    <button ng-click="setFilterParameter(true)">Completed</button>
+    <button ng-click="setFilterParameter(false)">New</button>
+</div>
+<div>
+    <button ng-click="sortBy('name')">Sort by name</button>
+    <button ng-click="sortBy('date')">Sort by date</button>
+</div>
+<div>
+    <button ng-repeat="item in dateOptions" ng-click="setDatePeriod(item.date)">{{item.name}}</button>
+</div>

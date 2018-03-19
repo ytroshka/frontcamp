@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <title>Todo App</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <script src="vendor/angular.min.js"></script>
+    <script src="vendor/angular-resource.js"></script>
+    <script src="vendor/angular-route.js"></script>
+    <script src="app/controllers/TodoController.js"></script>
+</head>
+<body ng-app="app">
+<div ng-controller="todoCtrl">
+    <div ng-view></div>
+</div>
+</body>
+</html>
