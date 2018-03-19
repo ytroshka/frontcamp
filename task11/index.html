@@ -12,35 +12,7 @@
 </head>
 <body ng-app="app">
 <div ng-controller="todoCtrl">
-
-    <a href="/add">Add</a>
     <div ng-view></div>
-
-    <p>You have {{todos.length}} tasks</p>
-    <ul>
-        <li ng-repeat="todo in todos | filter:filterByCompleted() | filter:filterByDatePeriod | orderBy:propertyName:reverse">
-            <div class="view">
-                <a class="name" ng-click="toggleEditMode(todo)" ng-href="/edit/{{todo.id}}">{{todo.name}}</a><br/>
-                <span class="date">{{todo.date | date: 'medium'}}</span>
-                <input type="checkbox" ng-checked="todo.completed" ng-model="todo.completed">
-                <input type="submit" value="delete" ng-click="deleteTodo($index)">
-            </div>
-        </li>
-    </ul>
-    <div>
-        <button ng-click="setFilterParameter('')">All</button>
-        <button ng-click="setFilterParameter(true)">Completed</button>
-        <button ng-click="setFilterParameter(false)">New</button>
-    </div>
-    <div>
-        <button ng-click="sortBy(null)">Set to unsorted</button>
-        <button ng-click="sortBy('name')">Sort by name</button>
-        <button ng-click="sortBy('date')">Sort by date</button>
-    </div>
-    <div>
-        <select ng-model="datePeriod" ng-init="datePeriod.date=0"
-                ng-options="option.name for option in options"></select>
-    </div>
 </div>
 </body>
 </html>

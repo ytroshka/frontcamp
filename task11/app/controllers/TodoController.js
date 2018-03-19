@@ -1,6 +1,6 @@
 const app = angular.module('app', ['ngResource', 'ngRoute']);
 
-app.config(['$routeProvider','$locationProvider', function ($routeProvider, $locationProvider) {
+app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
   $locationProvider.html5Mode({
     enabled: true,
     requireBase: false
@@ -9,9 +9,13 @@ app.config(['$routeProvider','$locationProvider', function ($routeProvider, $loc
     templateUrl: 'templates/add.html'
   }).when('/edit/:id', {
     templateUrl: 'templates/edit.html'
+  }).otherwise({
+    templateUrl: 'templates/main.html'
   });
-}]).controller('todoCtrl', ['$scope', 'orderByFilter', '$resource', function ($scope, orderBy, $resource) {
+}]).controller('todoCtrl', ['$scope', 'orderByFilter', '$resource', '$location', '$routeParams', function ($scope, orderBy, $resource, $location, $routeParams) {
+
   const MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24;
+
   $scope.todos = [];
 
   const jsonResource = $resource('./data/todos.json');
@@ -35,6 +39,7 @@ app.config(['$routeProvider','$locationProvider', function ($routeProvider, $loc
 
     this.todos.push(item);
     this.todoName = '';
+    $location.path('/');
   };
 
   $scope.deleteTodo = function (index) {
@@ -43,8 +48,14 @@ app.config(['$routeProvider','$locationProvider', function ($routeProvider, $loc
 
   $scope.filterParameter = '';
 
-  $scope.setFilterParameter = function (parameter) {
-    $scope.filterParameter = parameter;
+  $scope.setFilterParameter = function (filterParameter) {
+    $scope.filterParameter = filterParameter;
+  };
+
+  $scope.datePeriod = 0;
+
+  $scope.setDatePeriod = function (datePeriod) {
+    $scope.datePeriod = datePeriod;
   };
 
   $scope.filterByCompleted = function () {
@@ -57,9 +68,9 @@ app.config(['$routeProvider','$locationProvider', function ($routeProvider, $loc
     };
   };
 
-  $scope.filterByDatePeriod = function (item) {
-    if (item.date.getTime() >= $scope.datePeriod.date) {
-      return item;
+  $scope.filterByDatePeriod = function () {
+    return function (item) {
+      return item.date.getTime() - $scope.datePeriod >= 0;
     }
   };
 
@@ -73,16 +84,37 @@ app.config(['$routeProvider','$locationProvider', function ($routeProvider, $loc
     $scope.todos = orderBy($scope.todos, $scope.propertyName, $scope.reverse);
   };
 
-  $scope.toggleEditMode = function (task) {
-    event.target.closest('li').classList.toggle('editing');
-    $scope.newTodoName = task.name;
+  $scope.toggleEditMode = function () {
+    const id = +$routeParams.id;
+    const item = $scope.todos.find(function (value) {
+      return value.id === id;
+    });
+    console.log(item);
+    $scope.newTodoName = item.name;
+    $scope.newTodoDate = item.date;
+    console.log($scope);
   };
 
   $scope.saveTodo = function () {
-    $scope.toggleEditMode();
+    const id = +$routeParams.id;
+
+    const index = $scope.todos.findIndex(function (value) {
+      return value.id === id;
+    });
+
+    const item = $scope.todos.find(function (value) {
+      return value.id === id;
+    });
+
+    item.name = this.newTodoName;
+    item.date = this.newTodoDate;
+
+    $scope.todos[index] = item;
+
+    $location.path('/');
   };
 
-  $scope.options = [
+  $scope.dateOptions = [
     {date: 0, name: 'all'},
     {date: Date.now() - MILLISECONDS_IN_A_DAY, name: 'today'},
     {date: Date.now() - MILLISECONDS_IN_A_DAY * 7, name: 'week'},
