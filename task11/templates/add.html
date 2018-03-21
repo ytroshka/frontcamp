@@ -1,8 +1,8 @@
 <form ng-submit="addTodo()" name="addTodoForm" novalidate>
-  <input type="text" name="todoName" ng-model="todoName" required ng-minlength="5">
-  <span ng-show="addTodoForm.todoName.$error.minlength">Min length is 5.</span>
-  <div>
-    <input type="submit" value="add"
-           ng-disabled="addTodoForm.todoName.$error.required || addTodoForm.todoName.$error.minlength">
-  </div>
+    <input type="text" name="todoName" ng-model="todoName" required ng-minlength="5">
+    <span ng-show="addTodoForm.todoName.$error.minlength">Min length is 5.</span>
+    <div>
+        <input type="submit" value="add"
+               ng-disabled="addTodoForm.todoName.$error.required || addTodoForm.todoName.$error.minlength">
+    </div>
 </form>

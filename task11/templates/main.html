@@ -1,7 +1,7 @@
 <a href="/add">Add</a>
 <p>You have {{todos.length}} tasks</p>
 <ul>
-    <li ng-repeat="todo in todos | filterByCompleted:filterParameter | sortBy:propertyName:reverse">
+    <li ng-repeat="todo in todos | filterByCompleted:filterParameter | filterByDatePeriod:datePeriod | sortBy:propertyName:reverse">
         <div class="view">
             <a class="name" href="/edit/{{todo.id}}">{{todo.name}}</a><br/>
             <span class="date">{{todo.date | date}}</span>
@@ -11,13 +11,13 @@
     </li>
 </ul>
 <div>
-    <button ng-click="filterParameter = ''">All</button>
-    <button ng-click="filterParameter = true">Completed</button>
-    <button ng-click="filterParameter = false">New</button>
+    <button ng-click="setFilterParameter('')">All</button>
+    <button ng-click="setFilterParameter(true)">Completed</button>
+    <button ng-click="setFilterParameter(false)">New</button>
 </div>
 <div>
-    <button ng-click="propertyName ='name'; reverse = !reverse">Sort by name</button>
-    <button ng-click="propertyName ='date'; reverse = !reverse">Sort by date</button>
+    <button ng-click="sortBy('name')">Sort by name</button>
+    <button ng-click="sortBy('name')">Sort by date</button>
 </div>
 <div>
     <button ng-repeat="item in dateOptions" ng-click="setDatePeriod(item.date)">{{item.name}}</button>

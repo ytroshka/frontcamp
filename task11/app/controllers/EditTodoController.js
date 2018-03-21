@@ -1,29 +1,34 @@
-app.controller('editTodoCtrl', ['$scope', '$location', '$routeParams', function ($scope, $location, $routeParams) {
-    $scope.toggleEditMode = function () {
+app.controller('editTodoCtrl',
+  ['$scope', '$location', '$routeParams', 'TodoFactory',
+    function ($scope, $location, $routeParams, TodoFactory) {
+      $scope.toggleEditMode = () => {
         const id = +$routeParams.id;
-        const item = $scope.todos.find(function (value) {
-            return value.id === id;
+        const item = TodoFactory.getTodos().find(value => {
+          return value.id === id;
         });
+
         $scope.newTodoName = item.name;
         $scope.newTodoDate = item.date;
-    };
+      };
 
-    $scope.saveTodo = function () {
+      $scope.saveTodo = () => {
         const id = +$routeParams.id;
 
-        const index = $scope.todos.findIndex(function (value) {
-            return value.id === id;
+        const index = TodoFactory.getTodos().findIndex(value => {
+          return value.id === id;
         });
 
-        const item = $scope.todos.find(function (value) {
-            return value.id === id;
+        const item = TodoFactory.getTodos().find(value => {
+          return value.id === id;
         });
 
-        item.name = this.newTodoName;
-        item.date = this.newTodoDate;
+        item.name = $scope.newTodoName;
+        item.date = $scope.newTodoDate;
 
-        $scope.todos[index] = item;
+        TodoFactory.saveTodo(index, item);
 
         $location.path('/');
-    };
-}]);
+      };
+    }
+  ]
+);

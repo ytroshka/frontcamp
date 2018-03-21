@@ -1,43 +1,46 @@
-app.controller('todoCtrl', ['$scope', 'TodoFactory', function ($scope, TodoFactory) {
+app.controller('todoCtrl',
+  ['$scope', 'TodoFactory',
+    function ($scope, TodoFactory) {
+      $scope.todos = TodoFactory.getTodos();
 
-    const MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24;
-
-    $scope.todos = TodoFactory.getTodos();
-
-    /*
-    const jsonResource = $resource('./data/todos.json');
-    jsonResource.query({}, function (response) {
-        $scope.todos = response;
-        $scope.todos.map(function (todo) {
-            todo.date = new Date(todo.date);
-            return todo;
-        })
-    });*/
-
-    $scope.filterParameter = '';
-
-    $scope.deleteTodo = function (index) {
+      $scope.deleteTodo = index => {
         TodoFactory.deleteTodo(index);
-    };
+      };
 
-    $scope.datePeriod = 0;
+      /**COMPLETED FILTER**/
 
-    $scope.setDatePeriod = function (datePeriod) {
+      $scope.filterParameter = '';
+
+      $scope.setFilterParameter = param => {
+        $scope.filterParameter = param;
+      };
+
+      /**SORT FILTER**/
+
+      $scope.propertyName = '';
+      $scope.reverse = false;
+
+      $scope.sortBy = propertyName => {
+        $scope.reverse = (propertyName !== null && $scope.propertyName === propertyName) ? !$scope.reverse : false;
+        $scope.propertyName = propertyName;
+      };
+
+      /**DATE FILTER**/
+
+      $scope.datePeriod = 0;
+
+      $scope.setDatePeriod = datePeriod => {
         $scope.datePeriod = datePeriod;
-    };
+      };
 
+      const MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
-    $scope.filterByDatePeriod = function () {
-        return function (item) {
-            return item.date.getTime() - $scope.datePeriod >= 0;
-        }
-    };
-
-
-    $scope.dateOptions = [
+      $scope.dateOptions = [
         {date: 0, name: 'all'},
         {date: Date.now() - MILLISECONDS_IN_A_DAY, name: 'today'},
         {date: Date.now() - MILLISECONDS_IN_A_DAY * 7, name: 'week'},
         {date: Date.now() - MILLISECONDS_IN_A_DAY * 14, name: '2 weeks'},
-    ];
-}]);
+      ];
+    }
+  ]
+);
