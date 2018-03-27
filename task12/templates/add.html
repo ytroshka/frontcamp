@@ -1,0 +1,10 @@
+<form ng-submit="addNews()" name="addNewsForm" novalidate>
+    <input type="text" name="newsTitle" ng-model="newsTitle" required>
+    <span ng-show="addNewsForm.newsTitle.$error.required">This field is required</span><br/>
+    <input type="text" name="newsContent" ng-model="newsContent" required ng-minlength="5">
+    <span ng-show="addNewsForm.newsContent.$error.minlength">Min length is 5.</span>
+    <div>
+        <input type="submit" value="add"
+               ng-disabled="addNewsForm.newsTitle.$error.required || addNewsForm.newsContent.$error.required || addNewsForm.newsContent.$error.minlength">
+    </div>
+</form>
