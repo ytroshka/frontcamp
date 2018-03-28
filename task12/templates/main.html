@@ -1,19 +1,19 @@
-<a href="/add">Add</a>
-<p>There are {{news.length}} news</p>
+<h1>There are {{news.length}} news</h1>
 <ul>
     <li ng-repeat="item in news | pagination: current * pageSize | limitTo: pageSize | sortBy:propertyName:reverse">
         <div class="view">
-            <a class="title" href="/edit/{{item.id}}">{{item.title}}</a><br/>
-            <span class="content">{{item.content}}</span>
-            <input type="submit" value="delete" ng-click="deleteNews($index)">
+            <h2><a class="title" href="/edit/{{item.id}}">{{item.title}}</a></h2>
+            <p class="content">{{item.content}}</p>
+            <input type="submit" class="delete" value="X" ng-click="deleteNews($index)">
         </div>
     </li>
 </ul>
-<div ng-show="news.length">
-    <input value="prev" type="button" ng-disabled="current == 0" ng-click="current = current- 1">
+<div ng-show="news.length" class="pagination">
+    <input value="<" type="button" ng-disabled="current == 0" ng-click="current = current- 1">
     <span>Page {{current + 1}} of {{ numberOfPages() }}</span>
-    <input value="next" type="button" ng-disabled="current >= news.length/pageSize - 1" ng-click="current = current + 1">
+    <input value=">" type="button" ng-disabled="current >= news.length/pageSize - 1" ng-click="current = current + 1">
 </div>
-<div>
+<div class="controls">
     <button ng-click="sortBy('title')">Sort by title</button>
+    <a href="/add">Add</a>
 </div>

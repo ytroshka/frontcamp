@@ -1,7 +1,7 @@
 app.controller('addNewsCtrl',
     ['$scope', '$location', 'NewsFactory',
         function ($scope, $location, NewsFactory) {
-            $scope.addNews = () => {
+            $scope.save = () => {
                 NewsFactory.addNews($scope.newsTitle, $scope.newsContent);
                 $scope.newsTitle = '';
                 $scope.newsContent = '';
