@@ -1,0 +1,126 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'PT Sans', sans-serif;
+}
+
+.container {
+    max-width: 500px;
+    width: auto;
+    margin: 20px auto;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.view {
+    position: relative;
+    padding: 10px;
+    border: 1px solid #003292;
+    margin-bottom: 10px;
+}
+
+.view p {
+    margin-top: 10px;
+}
+
+.delete {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    color: white;
+    background-color: #003292;
+}
+
+input[type="text"] {
+    padding: 10px 20px;
+    display: block;
+    width: 100%;
+}
+
+ul {
+    list-style: none;
+}
+
+h2 a {
+    text-decoration: none;
+    color: #003292;
+}
+
+.pagination {
+    font-size: 0;
+    margin-bottom: 10px;
+    border: 1px solid #003292;
+}
+
+.pagination * {
+    font-size: 1rem;
+}
+
+.pagination span {
+    width: calc(100% - 80px);
+    display: inline-block;
+    text-align: center;
+}
+
+.pagination input {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    color: white;
+    background-color: #003292;
+    cursor: pointer;
+}
+
+.pagination input:disabled {
+    background-color: gray;
+}
+
+.controls {
+    font-size: 0;
+}
+
+.controls > * {
+    font-size: 1rem;
+    display: inline-block;
+    width: 49%;
+    margin-right: 2%;
+    border: 0;
+    color: white;
+    background-color: #003292;
+    height: 40px;
+    vertical-align: top;
+    text-align: center;
+    line-height: 40px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.controls > a {
+    margin-right: 0;
+}
+
+.wrapper {
+    margin-bottom: 20px;
+}
+
+.submit {
+    display: block;
+    width: 100%;
+    border: 0;
+    color: white;
+    background-color: #003292;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+}

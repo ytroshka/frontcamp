@@ -6,11 +6,11 @@ app.config(['$routeProvider', '$locationProvider', ($routeProvider, $locationPro
 
   $routeProvider
   .when('/add', {
-    templateUrl: 'templates/add.html',
+    templateUrl: 'templates/news-form.html',
     controller: 'addNewsCtrl'
   })
   .when('/edit/:id', {
-    templateUrl: 'templates/edit.html',
+    templateUrl: 'templates/news-form.html',
     controller: 'editNewsCtrl'
   })
   .otherwise({

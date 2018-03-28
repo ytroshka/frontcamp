@@ -18,7 +18,7 @@ app.controller('newsCtrl',
             };
 
             /**PAGINATION**/
-            
+
             $scope.current = 0;
             $scope.pageSize = 4;
 

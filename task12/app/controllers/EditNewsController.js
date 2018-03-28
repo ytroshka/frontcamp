@@ -1,17 +1,17 @@
 app.controller('editNewsCtrl',
     ['$scope', '$location', '$routeParams', 'NewsFactory',
         function ($scope, $location, $routeParams, NewsFactory) {
-            $scope.toggleEditMode = () => {
+            $scope.$on = function () {
                 const id = +$routeParams.id;
                 const item = NewsFactory.getNews().find(value => {
                     return value.id === id;
                 });
 
-                $scope.currentNewsTitle = item.title;
-                $scope.currentNewsContent = item.content;
+                $scope.newsTitle = item.title;
+                $scope.newsContent = item.content;
             };
 
-            $scope.saveNews = () => {
+            $scope.save = () => {
                 const id = +$routeParams.id;
 
                 const index = NewsFactory.getNews().findIndex(value => {
@@ -22,8 +22,8 @@ app.controller('editNewsCtrl',
                     return value.id === id;
                 });
 
-                item.title = $scope.currentNewsTitle;
-                item.content = $scope.currentNewsContent;
+                item.title = $scope.newsTitle;
+                item.content = $scope.newsContent;
 
                 NewsFactory.saveNews(index, item);
 

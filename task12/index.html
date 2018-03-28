@@ -4,6 +4,8 @@
     <base href="/">
     <meta charset="UTF-8">
     <title>News App</title>
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
     <script src="vendor/angular.min.js"></script>
     <script src="vendor/angular-resource.js"></script>
     <script src="vendor/angular-route.js"></script>
@@ -11,12 +13,13 @@
     <script src="app/routes.js"></script>
     <script src="app/filters.js"></script>
     <script src="app/factory/NewsFactory.js"></script>
+    <script src="app/directive/NewsFormDirective.js"></script>
     <script src="app/controllers/NewsController.js"></script>
     <script src="app/controllers/AddNewsController.js"></script>
     <script src="app/controllers/EditNewsController.js"></script>
 </head>
 <body ng-app="app">
-<div ng-controller="newsCtrl">
+<div class="container" ng-controller="newsCtrl">
     <div ng-view></div>
 </div>
 </body>
